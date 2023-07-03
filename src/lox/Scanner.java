@@ -64,12 +64,31 @@ class Scanner {
             case '\n':
                 line++;
                 break;
+            case '"': string(); break;
+
             default:
                 Lox.error(line, "Unexpected character.");
                 break;
         }
     }
 
+    private void string() {
+        while (peek() != '"' && !isAtEnd()) {
+            if (peek() == '\n') line++;
+            advance();
+        }
+        if (isAtEnd()) {
+            Lox.error(line, "Unterminated string.");
+            return;
+        }
+        // The closing ".
+        advance();
+        // Trim the surrounding quotes.
+        String value = source.substring(start + 1, current - 1);
+        addToken(STRING, value);
+    }
+
+    //  We only consume the current character if it’s what we’re looking for
     private boolean match(char expected) {
         if (isAtEnd()) return false;
         if (source.charAt(current) != expected) return false;
@@ -83,10 +102,12 @@ class Scanner {
         return source.charAt(current);
     }
 
+    // tells us if we’ve consumed all the characters (en la linea?)
     private boolean isAtEnd(){
         return current >= source.length();
     }
 
+    //  consumes the next character in the source file and returns it.
     private char advance(){
         current++;
         return source.charAt(current - 1);
