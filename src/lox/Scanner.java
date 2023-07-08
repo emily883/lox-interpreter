@@ -73,7 +73,11 @@ class Scanner {
                 if (match('/')) {
                     // A comment goes until the end of the line.
                     while (peek() != '\n' && !isAtEnd()) advance();
-                } else {
+                } else if(match('*')){
+                    // A comment goes until the end of the line.
+                    while (peek() == '*' && !isAtEnd()) advance();
+                }
+                else {
                     addToken(SLASH);
                 }
                 break;
@@ -93,7 +97,7 @@ class Scanner {
                 }else if(isAlpha(c)){
                     identifier();
                 }else{
-                    Lox.error(line, "Unexpected character.");
+                    Lox.error(line,"Unexpected character" );
                 }
                 break;
         }
