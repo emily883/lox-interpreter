@@ -1,11 +1,11 @@
-package com.craftinginterpreters.lox;
+package lox;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.craftinginterpreters.lox.TokenType.*;
+import static lox.TokenType.*;
 
 
 class Scanner {
@@ -41,13 +41,13 @@ class Scanner {
     }
 
     List<Token> scanTokens() {
-        while(!isAtEnd){
+        while(!isAtEnd()){
             // We are at the beginning of the next lexeme
-            start = current
+            start = current;
             scanToken();
         }
 
-        tokens.add(new Toke(EOF, "", null, line));
+        tokens.add(new Token(EOF, "", null, line));
 
         return tokens;
     }
@@ -116,9 +116,9 @@ class Scanner {
             // Consume the "."
             advance();
 
-            while(isDigit(peek())))) advance();
+            while(isDigit(peek())) advance();
         }
-        addToken(NUMBER, DOUBLE.parseDOUBLE(source.substring(start, current)));
+        addToken(NUMBER, Double.parseDouble(source.substring(start, current)));
 
         }
 
@@ -132,7 +132,7 @@ class Scanner {
             Lox.error(line, "Unterminated string.");
             return;
         }
-        // The closing ".
+        // The closing
         advance();
 
         // Trim the surrounding quotes.
@@ -144,26 +144,26 @@ class Scanner {
     private boolean match(char expected) {
         if (isAtEnd()) return false;
         if (source.charAt(current) != expected) return false;
-        current++
+        current++;
         return true;
     }
 
     // Look at the actual character not consumed
     private char peek(){
-        if(isAtEnd()) return '\0'
+        if(isAtEnd()) return '\0';
         return source.charAt(current);
     }
 
     // LookAhead
-    privat char peekNext(){
-        if(current + 1 >= source.length()))) return '\0';
+    private char peekNext(){
+        if(current + 1 >= source.length()) return '\0';
         return source.charAt(current + 1);
     }
 
     // Check if is a letter
     private boolean isAlpha(char c){
         return (c >= 'a' && c <= 'z') ||
-                (c >= "A" && c <= "Z") ||
+                (c >= 'A' && c <= 'Z') ||
                 c == '_';
     }
 
