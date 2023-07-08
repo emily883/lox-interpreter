@@ -59,7 +59,7 @@ class Scanner {
             case ' ':
             case '\r':
             case '\t':
-                // Ignore whitespace.
+                // Ignore whitespace >:D
                 break;
             case '\n':
                 line++;
@@ -102,6 +102,7 @@ class Scanner {
         }
         // The closing ".
         advance();
+
         // Trim the surrounding quotes.
         String value = source.substring(start + 1, current - 1);
         addToken(STRING, value);
@@ -115,22 +116,28 @@ class Scanner {
         return true;
     }
 
-    // Look ahead method, look at the actual character not consumed
+    // Look at the actual character not consumed
     private char peek(){
         if(isAtEnd()) return '\0'
         return source.charAt(current);
+    }
+
+    // LookAhead
+    privat char peekNext(){
+        if(current + 1 >= source.length()))) return '\0';
+        return source.charAt(current + 1);
     }
 
     private boolean isDigit(char c){
         return c >= '0' && c <= '9';
     }
 
-    // tells us if we’ve consumed all the characters (en la linea?)
+    // Tells us if we’ve consumed all the characters in the line
     private boolean isAtEnd(){
         return current >= source.length();
     }
 
-    //  consumes the next character in the source file and returns it.
+    //  Consumes the current character in the source file and returns it.
     private char advance(){
         current++;
         return source.charAt(current - 1);
