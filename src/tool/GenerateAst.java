@@ -23,8 +23,8 @@ public class GenerateAst {
 
     private static void defineAst(String outputDir, List<String> types) throws IOException {
     String path = outputDir + "/" + "Expr" + ".java";
-    PrintWriter writer = new PrintWriter(path, "UTF_8");
-    writer.println("package com.craftinginterpreters.lox;");
+    PrintWriter writer = new PrintWriter(path, "UTF-8");
+    writer.println("package lox;");
     writer.println();
     writer.println("import java.util.List;");
     writer.println();
@@ -44,7 +44,7 @@ public class GenerateAst {
     }
 
     private static void defineType(PrintWriter writer, String className, String fieldList) {
-        writer.println("  static class "  + className + " extends" + "Expr" + " {");
+        writer.println("  static class "  + className + " extends" + " Expr" + " {");
 
         // Constructor
 
@@ -54,7 +54,7 @@ public class GenerateAst {
         String[] fields = fieldList.split(", ");
         for(String field : fields){
             String name = field.split(" ")[1];
-            writer.println("         this." + name + " =" + name + ";");
+            writer.println("         this." + name + " = " + name + ";");
         }
         writer.println("      }");
 
