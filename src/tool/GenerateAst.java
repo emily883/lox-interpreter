@@ -13,7 +13,7 @@ public class GenerateAst {
             System.exit((64));
         }
         String outputDir = args[0];
-        defineAst(outputDir, "Expr", Arrays.asList(
+        defineAst(outputDir, Arrays.asList(
                 "Binary : Expr left, Token operator, Expr right",
                 "Grouping : Expr expression",
                 "Literal : Object value",
@@ -21,20 +21,20 @@ public class GenerateAst {
         ));
     }
 
-    private static void defineAst(String outputDir, String baseName, List<String> types) throws IOException {
-    String path = outputDir + "/" + baseName + ".java";
-    PrintWriter writer = new PrintWriter(path, "UTF-8");
+    private static void defineAst(String outputDir, List<String> types) throws IOException {
+    String path = outputDir + "/" + "Expr" + ".java";
+    PrintWriter writer = new PrintWriter(path, "UTF_8");
     writer.println("package com.craftinginterpreters.lox;");
     writer.println();
     writer.println("import java.util.List;");
     writer.println();
-    writer.println("abstract class " + baseName + " {");
+    writer.println("abstract class " + "Expr" + " {");
 
     // The AST classes.
     for(String type : types){
         String className = type.split(":")[0].trim();
         String fields = type.split(":")[1].trim();
-        defineType(writer, baseName, className, fields);
+        defineType(writer, className, fields);
     }
 
     writer.println("}");
@@ -43,11 +43,30 @@ public class GenerateAst {
 
     }
 
-    private static void defineType(PrintWriter writer, String baseName, String className, String fieldList) {
+    private static void defineType(PrintWriter writer, String className, String fieldList) {
+        writer.println("  static class "  + className + " extends" + "Expr" + " {");
+
+        // Constructor
+
+        writer.println("     " + className + "(" + fieldList + ") {");
+
+        // Store parameters in fields
+        String[] fields = fieldList.split(", ");
+        for(String field : fields){
+            String name = field.split(" ")[1];
+            writer.println("         this." + name + " =" + name + ";");
+        }
+        writer.println("      }");
 
 
 
+        // Fields
+        writer.println();
+        for(String field : fields){
+            writer.println("      final" + field + ";");
+        }
 
+        writer.println("    }");
     }
 
 
